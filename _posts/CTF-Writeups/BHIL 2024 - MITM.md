@@ -1,3 +1,22 @@
+---
+title: "BHIL 2024 - Mitm"
+classes: wide
+header:
+  teaser: /assets/images/ctf-writeups/utctf2020/logo.png
+ribbon: green
+description: "This challenge is asking for x64 shellcode to read the flag file, it's using some `seccomp rules` to limit us to only use `open/read/write/exit` syscalls (so we cannot spawn a shell).
+We can write some assembly (painful) or we can use pwntools..."
+categories:
+  - CTF Writeups
+---
+
+> Challenge description:
+>
+> Mommy! I think I know how to make shellcodes
+
+
+
+
 # MITM
 This challenge contains two files:
 * 1 - client.py
