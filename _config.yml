@@ -110,6 +110,10 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/AI-fergan"
+    - lable: "Team-Page"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/CyberEGGs"
+      
 
 # Site Footer
 footer:
