@@ -95,11 +95,6 @@ author:
   name: "Noam Afergan"
   avatar: /assets/images/site_data/avatar.jpg # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio: "Malware Analysis & Reversing & Low level dev"
-  team: "CyberEGGs"
-  links:
-      - label: "Team"
-        icon: "fas fa-fw fa-envelope-square"
-        url: "https://github.com/CyberEGGs"
   # location: "IL - Tel Aviv"
   email:
   links:
@@ -115,6 +110,10 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/AI-fergan"
+    - lable: "Team-Page"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/CyberEGGs"
+      
 
 # Site Footer
 footer:
