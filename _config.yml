@@ -20,7 +20,7 @@ title: "AI-fergan"
 title_separator: "-"
 subtitle: # site tagline that appears below site title in masthead
 name: "Noam Afergan"
-description: "Malware Analysis - Reversing - Low level dev"
+description: "Malware Analysis - Binary Exploitation - Low level dev"
 url: # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl: # the subpath of your site, e.g. "/blog"
 repository: # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -94,7 +94,7 @@ analytics:
 author:
   name: "Noam Afergan"
   avatar: /assets/images/site_data/avatar.jpg # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "Malware Analysis & Reversing & Low level dev"
+  bio: "Malware Analysis & Binary Exploitation & Low level dev"
   # location: "IL - Tel Aviv"
   email:
   links:
