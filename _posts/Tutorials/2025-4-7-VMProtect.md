@@ -4,7 +4,7 @@ classes: wide
 header:
   teaser: /assets/images/tutorials/VMProtect/VMProtect-logo.png
 ribbon: blue
-description: "Begginers guide for Virtual Based protections"
+description: "Beginners guide for Virtual Based protections"
 categories:
   - Tutorials
 ---
