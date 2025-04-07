@@ -8,7 +8,7 @@ description: "Begginers guide for Virtual Based protections"
 categories:
   - Tutorials
 ---
-## Intro - VMProtect
+# Intro - VMProtect
 According to the official VMProtect website ([VMProtect Software](https://vmpsoft.com/)) VMProtect is designed to "secure your code against reverse engineering, analysis, and cracking. Use the advantage of code virtualization, which executes virtualized fragments of code on several virtual machines embedded into the protected application."
 
 VMProtect is a virtualization-based software protection system. 
@@ -16,12 +16,12 @@ What makes it unique is its ability to generate custom virtual instruction sets 
 This means that no two protected binaries are the same each one uses a completely different virtual architecture. 
 Additionally, VMProtect can mix native and virtual instructions within a single function, making static analysis and devirtualization significantly more difficult.
 
-- Note: In general, VMProtect is designed for both personal and commercial use, and you can find it in many games today. However, it can also be used in malware due to its strong protection. One of the main weaknesses of this protection is its impact on performance, as the bytecode handling can slow down execution, which can be frustrating for gamers and, in some cases, even hurt game sales.
+- Note: In general, VMProtect is designed for both personal and commercial use, and you can find it in many games today. However, it can also be used in malware due to its strong protection. One of the main weaknesses of this protection is its impact on performance, as the bytecode handling can slow down execution.
 
-## What does it mean software virtualization?
+# Software Virtualization
 Software virtualization, in the context of code protection, is different from operating system or hardware virtualization. 
 Instead of emulating an entire system or memory layout, software virtualization transforms CPU instructions into custom bytecode, which is then executed by a virtual machine embedded in the application. 
-This virtual machine uses handler functions that interpret and execute each bytecode instruction, effectively hiding the original logic from disassemblers and reverse engineers.
+This "virtual machine" uses handler functions that interpret and execute each bytecode instruction, effectively hiding the original logic from disassemblers and reverse engineers.
 
 ### example
 Let's take a look at this sample bytecode handler:
@@ -49,11 +49,11 @@ int main() {
     return 0;
 }
 ```
-Now let’s break it down. This handler creates its own stack and stack pointer, then uses a switch statement to handle each bytecode instruction. Each opcode performs a specific function, like pushing a value / adding two values / printing the result.
+let’s break it down, this handler creates its own stack and stack pointer, then uses a switch statement to handle each bytecode instruction. Each opcode performs a specific function, like pushing a value / adding two values / printing the result.
 In other words, it simulates a tiny virtual CPU!
 
-## Analyzing a Real Handler
-Now, we’re going to begin our first analysis mission. We’ll start with a simple binary that I compiled myself using the VMProtect demo version (just for learning purposes). You can download the binary [here](github.com/4f3rg4n). As we’ve learned, each build of VMProtect generates a unique virtualization protection, so I recommend using this specific binary. If you want to try compiling your own binaries with VMProtect, you can download the demo version installer from [here](https://vmpsoft.com/uploads/VMProtectDemo.exe).
+# Analyzing a Real Handler
+Now we’re going to begin our first analysis mission! We’ll start with a simple binary that I compiled myself using the VMProtect demo version (just for learning purposes). You can download the binary [here](/assets/resources/sample.vmp.exe). As we’ve learned, each build of VMProtect generates a unique virtualization protection, so I recommend using this specific binary. If you want to try compiling your own binaries with VMProtect, you can download the demo version installer from [here](https://vmpsoft.com/uploads/VMProtectDemo.exe).
 
 The binary source is:
 ```c
@@ -70,11 +70,10 @@ int main(void) {
     printf("result: %d", func(x, y));
 }
 ```
-And the exe file before the VMProtect build is [Source exe](github.com/4f3rg4n).
+And the exe file before the VMProtect build is [Source exe](/assets/resources/sample.exe).
 
 Let's dive into the analysis of the Protected binary.
 - Note: I'm using IDA-Pro V7.6
-
 First, we should take a look at the segments in the binary and identify which one contains our code.
 
 [![segments](/assets/images/tutorials/VMProtect/segments.png)](/assets/images/tutorials/VMProtect/segments.png)
