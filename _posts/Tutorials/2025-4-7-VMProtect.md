@@ -76,9 +76,11 @@ Let's dive into the analysis of the Protected binary.
 -Note: I'm using IDA-Pro V7.6, just note it :)
 
 First, we should take a look at the segments in the binary and identify which one contains our code.
+
 [![segments](/assets/images/tutorials/VMProtect/segments.png)](/assets/images/tutorials/VMProtect/segments.png)
 
 At first, we might think the code is in the `.text` segment, but if we check what's actually in that segment, we’ll see this:
+
 [![.text segment](/assets/images/tutorials/VMProtect/.text.png)](/assets/images/tutorials/VMProtect/text.png)
 
 This segment doesn't contain typical code instructions.
@@ -87,9 +89,11 @@ They are not specific to VMProtect, but they are often used in packed or protect
 
 This strongly suggests that the real code has been moved or hidden elsewhere, most likely in a custom section created by VMProtect, where the actual logic is either encrypted, packed, or virtualized.
 So, let's identify the entry point of the binary.
+
 [![entry point](/assets/images/tutorials/VMProtect/entry_point.png)](/assets/images/tutorials/VMProtect/entry_point.png)
 
 Now let’s see which segment actually contains the entry point:
+
 [![.C__ segment](/assets/images/tutorials/VMProtect/C__.png)](/assets/images/tutorials/VMProtect/C__.png)
 
 Here we can see that the entry point is located in the `.C__` segment, This segment was created by VMProtect and contains the call to the VMProtect handler.
