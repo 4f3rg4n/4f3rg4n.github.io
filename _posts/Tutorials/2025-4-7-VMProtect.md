@@ -53,7 +53,7 @@ let’s break it down, this handler creates its own stack and stack pointer, the
 In other words, it simulates a tiny virtual CPU!
 
 # Analyzing a Real Handler
-Now we’re going to begin our first analysis mission! We’ll start with a simple binary that I compiled myself using the VMProtect demo version (just for learning purposes). You can download the binary [here](/assets/resources/sample.vmp.exe). As we’ve learned, each build of VMProtect generates a unique virtualization protection, so I recommend using this specific binary. If you want to try compiling your own binaries with VMProtect, you can download the demo version installer from [here](https://vmpsoft.com/uploads/VMProtectDemo.exe).
+Now we’re going to begin our first analysis mission! We’ll start with a simple binary that I compiled myself using the VMProtect demo version (just for learning purposes). You can download the binary [here](https://github.com/4f3rg4n/4f3rg4n.github.io/raw/refs/heads/master/assets/resources/sample.vmp.exe). As we’ve learned, each build of VMProtect generates a unique virtualization protection, so I recommend using this specific binary. If you want to try compiling your own binaries with VMProtect, you can download the demo version installer from [here](https://vmpsoft.com/uploads/VMProtectDemo.exe).
 
 The binary source is:
 ```c
@@ -70,7 +70,7 @@ int main(void) {
     printf("result: %d", func(x, y));
 }
 ```
-And the exe file before the VMProtect build is [Source exe](/assets/resources/sample.exe).
+And the exe file before the VMProtect build is [Source exe](https://github.com/4f3rg4n/4f3rg4n.github.io/raw/refs/heads/master/assets/resources/sample.exe).
 
 Let's dive into the analysis of the Protected binary.
 - Note: I'm using IDA-Pro V7.6
