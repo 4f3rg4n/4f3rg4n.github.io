@@ -59,7 +59,7 @@ The binary source is:
 ```c
 #include <stdio.h>
 
-int func(int x, int y){
+int func(int x, int y) {
     return x ^ y;
 }
 
@@ -231,6 +231,6 @@ This makes it difficult for security researchers to understand what the malware 
 While VMProtect was originally designed to protect legitimate software, its strong obfuscation and virtualization features have made it attractive to attackers trying to avoid detection.
 
 ### examples
-* LokiBot - info-stealer that have been found using VMProtect to hide its payloads.
-* FinFisher (also known as FinSpy) - spyware that has used VMProtect to make reverse engineering harder.
+* [LokiBot](https://www.checkpoint.com/cyber-hub/threat-prevention/what-is-malware/lokibot-malware/) - info-stealer that have been found using VMProtect to hide its payloads.
+* [FinFisher](https://www.microsoft.com/en-us/security/blog/2018/03/01/finfisher-exposed-a-researchers-tale-of-defeating-traps-tricks-and-complex-virtual-machines/) (also known as FinSpy) - spyware that has used VMProtect to make reverse engineering harder.
 These cases show how a tool made for software protection can be repurposed by threat actors to shield their malicious operations.
