@@ -73,7 +73,7 @@ int main(void) {
 And the exe file before the VMProtect build is [Source exe](github.com/4f3rg4n).
 
 Let's dive into the analysis of the Protected binary.
--Note: I'm using IDA-Pro V7.6, just note it :)
+- Note: I'm using IDA-Pro V7.6
 
 First, we should take a look at the segments in the binary and identify which one contains our code.
 
@@ -205,5 +205,33 @@ stack_adjust:
     }
 }
 ```
+### Handler opcodes:
+- Opcode 0: Simulates a stack push — copies a value from the virtual stack and writes it back to memory.
+- Opcode 1: Performs a bitwise rotation and stores a 16-bit value into a memory location pointed by a stack value.
+- Opcode 2: Reads a 16-bit offset from bytecode and writes a pointer (from the stack) into that offset in the local stack buffer.
+- Opcode 3: Executes bitwise shifts and rotates, modifies values using bit operations, and updates stack with the result.
+- Opcode 4: Loads data from a calculated offset, does a bit rotate on a register, and pushes the result onto the virtual stack.
+- Default: Handles invalid or unknown opcodes by jumping to an error or obfuscation routine.
 
+VMProtect uses this handler and its opcodes to interpret and execute virtualized bytecode that works like the original software’s logic. 
+This allows the program to run "normally" while making reverse engineering extremely difficult, since the actual instructions are hidden behind a custom virtual machine rather than standard CPU code.
 
+## Performance
+In games, VMProtect is often combined with other DRM protections. 
+One of the most well-known examples is Assassin’s Creed, which used both VMProtect and another complex DRM system called Denuvo (which also uses virtualization-based techniques).
+Below is a graph comparing the frame rates (FPS) of the game in both scenarios — with and without that protections:
+
+[![frame rate](/assets/images/tutorials/VMProtect/frame_rate.png)](/assets/images/tutorials/VMProtect/frame_rate.png)
+
+We can see that these protections really hurt the game's performance, and that's why a lot of players are upset with the game companies.
+
+## Malwares
+Malware authors often use VMProtect to make their code harder to analyze and reverse engineer.
+By wrapping malicious code in layers of virtualized instructions, VMProtect can hide the real behavior of the malware from static and dynamic analysis tools. 
+This makes it difficult for security researchers to understand what the malware does or to write effective detections. 
+While VMProtect was originally designed to protect legitimate software, its strong obfuscation and virtualization features have made it attractive to attackers trying to avoid detection.
+
+### examples
+* LokiBot - info-stealer that have been found using VMProtect to hide its payloads.
+* FinFisher (also known as FinSpy) - spyware that has used VMProtect to make reverse engineering harder.
+These cases show how a tool made for software protection can be repurposed by threat actors to shield their malicious operations.
