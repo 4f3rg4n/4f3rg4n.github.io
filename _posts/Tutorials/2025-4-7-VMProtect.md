@@ -89,8 +89,12 @@ This strongly suggests that the real code has been moved or hidden elsewhere, mo
 So, let's identify the entry point of the binary.
 [![entry point](/assets/images/tutorials/VMProtect/entry_point.png)](/assets/images/tutorials/VMProtect/entry_point.png)
 
-lets see which segment own that entry point:
+Now let’s see which segment actually contains the entry point:
+[![entry point](/assets/images/tutorials/VMProtect/.C__.png)](/assets/images/tutorials/VMProtect/.C__.png)
 
+Here we can see that the entry point is located in the `.C__` segment, This segment was created by VMProtect and contains the call to the VMProtect handler.
+
+The handler’s code, after being decompiled using the Hex-Rays decompiler, is as follows:
 ```c
 void __fastcall bytecode_handler(
     _WORD *bytecode, __int64 param1, __int64 param2, __int64 param3,
