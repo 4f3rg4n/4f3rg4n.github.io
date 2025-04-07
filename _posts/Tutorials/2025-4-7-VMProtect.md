@@ -81,7 +81,7 @@ First, we should take a look at the segments in the binary and identify which on
 
 At first, we might think the code is in the `.text` segment, but if we check what's actually in that segment, we’ll see this:
 
-[![.text segment](/assets/images/tutorials/VMProtect/.text.png)](/assets/images/tutorials/VMProtect/text.png)
+[![.text segment](/assets/images/tutorials/VMProtect/text.png)](/assets/images/tutorials/VMProtect/text.png)
 
 This segment doesn't contain typical code instructions.
 Instead, it’s mostly filled with uninitialized data (indicated by `dup(?)`) and includes named entries like `TlsCallback_1` and `TlsCallback_2`. These are `Thread Local Storage (TLS) callbacks` - standard Windows mechanisms that execute before the programs actual entry point. 
