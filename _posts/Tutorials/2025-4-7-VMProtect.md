@@ -79,7 +79,7 @@ First, we should take a look at the segments in the binary and identify which on
 [![segments](/assets/images/tutorials/VMProtect/segments.png)](/assets/images/tutorials/VMProtect/segments.png)
 
 At first, we might think the code is in the `.text` segment, but if we check what's actually in that segment, we’ll see this:
-[![.text segment](/assets/images/tutorials/VMProtect/.text.png)](/assets/images/tutorials/VMProtect/.text.png)
+[![.text segment](/assets/images/tutorials/VMProtect/.text.png)](/assets/images/tutorials/VMProtect/text.png)
 
 This segment doesn't contain typical code instructions.
 Instead, it’s mostly filled with uninitialized data (indicated by `dup(?)`) and includes named entries like `TlsCallback_1` and `TlsCallback_2`. These are `Thread Local Storage (TLS) callbacks` - standard Windows mechanisms that execute before the programs actual entry point. 
@@ -90,7 +90,7 @@ So, let's identify the entry point of the binary.
 [![entry point](/assets/images/tutorials/VMProtect/entry_point.png)](/assets/images/tutorials/VMProtect/entry_point.png)
 
 Now let’s see which segment actually contains the entry point:
-[![entry point](/assets/images/tutorials/VMProtect/.C__.png)](/assets/images/tutorials/VMProtect/.C__.png)
+[![.C__ segment](/assets/images/tutorials/VMProtect/C__.png)](/assets/images/tutorials/VMProtect/C__.png)
 
 Here we can see that the entry point is located in the `.C__` segment, This segment was created by VMProtect and contains the call to the VMProtect handler.
 
