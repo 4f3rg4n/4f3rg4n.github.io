@@ -68,6 +68,7 @@ int main(void) {
     printf("xor nums <x y>: ");
     scanf("%d %d", &x, &y);
     printf("result: %d", func(x, y));
+    return 0;
 }
 ```
 And the exe file before the VMProtect build is [Source exe](https://github.com/4f3rg4n/4f3rg4n.github.io/raw/refs/heads/master/assets/resources/sample.exe).
