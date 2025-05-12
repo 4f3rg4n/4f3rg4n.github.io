@@ -2,17 +2,13 @@
 title: "Break The Syntax 2025- hexdumper"
 classes: wide
 header:
-  teaser: /assets/images/ctf-writeups/BTS2025/BTS2025-logo.png
+  teaser: /assets/images/ctf-writeups/BTS2025/bts2025-logo.png
 ribbon: green
-description: "This challenge provides a data management service that parses your data using the CSV format."
+description: "Newer glibc pwn challenge"
 categories:
   - CTF Writeups
   - pwn
 ---
-
-> Challenge description:
->
-> CSV is the best way to store data. Wanna prove me wrong?
 
 ```c
 #include <stdio.h>
