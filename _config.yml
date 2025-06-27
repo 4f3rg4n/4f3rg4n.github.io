@@ -94,7 +94,7 @@ analytics:
 author:
   name: "Noam Afergan"
   avatar: /assets/images/site_data/avatar.jpg # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "Malware Analysis & Binary Exploitation & Low level dev"
+  bio: "RE & Binary Exploitation & Low level dev"
   # location: "IL - Tel Aviv"
   email:
   links:
