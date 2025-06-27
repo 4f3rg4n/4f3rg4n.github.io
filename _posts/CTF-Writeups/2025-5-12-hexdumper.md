@@ -478,7 +478,7 @@ def arbitrary_read(p: process, addr: int):
     return res
 ```
 
-#Exploit
+# Exploit
 Now that we have that leaks & arbitrary read & write functions, we can start build our exploit!
 
 The Glibc version is `2.35`, so we can't overwrite `__malloc_hook` / `__realloc_hook` / `__free_hook` because they’ve been removed or protected on that newer Glibces.
