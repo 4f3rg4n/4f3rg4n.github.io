@@ -27,7 +27,7 @@ categories:
     Stripped:   <font color="#FF3C3C">No</font>
 </pre>
 
-Code dump in C of the decompiled main function:
+Dump of the decompiled main function:
 ```c
 int __fastcall main(int argc, const char **argv, const char **envp)
 {
@@ -43,6 +43,7 @@ int __fastcall main(int argc, const char **argv, const char **envp)
 ```
 
 `reset_shellcodes` points to a sequence of opcodes stored in the `.data` section:
+
 [![static symbols](/assets/images/ctf-writeups/pwnable.co.il/shellcope/reset_shellcodes_dump.png)](/assets/images/ctf-writeups/pwnable.co.il/shellcope/reset_shellcodes_dump.png)
 
 The main function maps a 0x1000 bytes (page size - 4096 in decimal) using `mmap()`, copies the predefined opcodes from `reset_shellcodes` into that page using `strcpy()`, 
