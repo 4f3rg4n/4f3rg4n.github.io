@@ -103,16 +103,13 @@ author:
       url: "mailto:noam18.af@gmail.com"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/AI_fergan"
+      url: "https://twitter.com/4f3rg4n"
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/noam-afergan-074176284/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/4f3rg4n"
-    - lable: "Team-Page"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/CyberEGGs"
       
 
 # Site Footer
