@@ -1,20 +1,20 @@
 {
-  "name": "blowfish_template",
+  "name": "afergan_blog",
   "version": "1.0.0",
-  "description": "Blowfish Template",
+  "description": "My git-blog",
   "main": "index.js",
   "scripts": {
     "dev": "hugo server --minify -D -E -F"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nunocoracao/blowfish_template.git"
+    "url": "git+https://github.com/4f3rg4n/4f3rg4n.github.io.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nunocoracao/blowfish_template/issues"
+    "url": "https://github.com/4f3rg4n/4f3rg4n.github.io/issues"
   },
-  "homepage": "https://github.com/nunocoracao/blowfish_template#readme"
+  "homepage": "https://github.com/4f3rg4n/4f3rg4n.github.io#readme"
 }
