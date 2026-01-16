@@ -9,7 +9,7 @@ title = "Blowfish"
   isoCode = "en"
   rtl = false
   # logo = "img/logo.png"
-  description = "My awesome website"
+  description = "My git-blog"
   # copyright = "Copy, _right?_ :thinking_face:"
   dateFormat = "2 January 2006"
 
