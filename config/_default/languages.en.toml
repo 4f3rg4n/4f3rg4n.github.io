@@ -1,24 +1,23 @@
 languageCode = "en"
 languageName = "English"
+displayName = "EN"
+isoCode = "en"
 weight = 1
+rtl = false
 
-title = "Blowfish"
+title = "4f3rg4n's Blog"
+# logo = "img/logo.png"
+description = "My git-blog"
+# copyright = "Copy, _right?_ :thinking_face:"
 
-[params]
-  displayName = "EN"
-  isoCode = "en"
-  rtl = false
-  # logo = "img/logo.png"
-  description = "My git-blog"
-  # copyright = "Copy, _right?_ :thinking_face:"
-  dateFormat = "2 January 2006"
+dateFormat = "2 January 2006"
 
-[params.author]
+[author]
   name = "Noam Afergan"
-  image = "img/blowfish_logo.png"
-  headline = "ret2gush-katif"
-  bio = "A low-level junkie and CTF player"
-  # links = [
+  image = "img/profile.png"
+  headline = "A low-level junkie and CTF player"
+  bio = "ret2gush-katif"
+  links = [
   #   { email = "mailto:hello@your_domain.com" },
   #   { link = "https://link-to-some-website.com/" },
   #   { amazon = "https://www.amazon.com/hz/wishlist/ls/wishlist-id" },
@@ -31,7 +30,7 @@ title = "Blowfish"
   #   { facebook = "https://facebook.com/username" },
   #   { flickr = "https://www.flickr.com/photos/username/" },
   #   { foursquare = "https://foursquare.com/username" },
-  #   { github = "https://github.com/username" },
+     { github = "https://github.com/4f3rg4n" },
   #   { gitlab = "https://gitlab.com/username" },
   #   { google = "https://www.google.com/" },
   #   { hashnode = "https://username.hashnode.dev" },
@@ -39,7 +38,7 @@ title = "Blowfish"
   #   { keybase = "https://keybase.io/username" },
   #   { kickstarter = "https://www.kickstarter.com/profile/username" },
   #   { lastfm = "https://lastfm.com/user/username" },
-  #   { linkedin = "https://linkedin.com/in/username" },
+     { linkedin = "https://www.linkedin.com/in/noam-afergan-074176284/" },
   #   { mastodon = "https://mastodon.instance/@username" },
   #   { medium = "https://medium.com/username" },
   #   { microsoft = "https://www.microsoft.com/" },
@@ -53,12 +52,11 @@ title = "Blowfish"
   #   { soundcloud = "https://soundcloud.com/username" },
   #   { stack-overflow = "https://stackoverflow.com/users/userid/username" },
   #   { steam = "https://steamcommunity.com/profiles/userid" },
-  #   { telegram = "https://t.me/username" },
+     { telegram = "https://t.me/cyb3rat" },
   #   { tiktok = "https://tiktok.com/@username" },
   #   { tumblr = "https://username.tumblr.com" },
   #   { twitch = "https://twitch.tv/username" },
   #   { twitter = "https://twitter.com/username" },
   #   { whatsapp = "https://wa.me/phone-number" },
   #   { youtube = "https://youtube.com/username" },
-  #   { ko-fi = "https://ko-fi.com/username" },
-  # ]
+  ]
