@@ -11,19 +11,21 @@ layout: archive
   {% endif %}
 {% endfor %}
 
-<ul class="taxonomy__index">
+<!-- Symmetric Category Index -->
+<div class="category-grid">
   {% for i in (1..categories_max) reversed %}
     {% for category in site.categories %}
       {% if category[1].size == i %}
-        <li>
-          <a href="#{{ category[0] | slugify }}">
-            <strong>{{ category[0] }}</strong> <span class="taxonomy__count">{{ i }}</span>
+        <div class="category-item">
+          <a href="#{{ category[0] | slugify | downcase }}">
+            <strong>{{ category[0] }}</strong>
+            <span class="category-count">{{ i }}</span>
           </a>
-        </li>
+        </div>
       {% endif %}
     {% endfor %}
   {% endfor %}
-</ul>
+</div>
 
 {% for i in (1..categories_max) reversed %}
   {% for category in site.categories %}
@@ -40,3 +42,69 @@ layout: archive
     {% endif %}
   {% endfor %}
 {% endfor %}
+
+<style>
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 1rem;
+}
+
+.category-item {
+  text-align: center;
+}
+
+.category-item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  background: #f8f9fa;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  min-height: 100px;
+  justify-content: center;
+}
+
+.category-item a:hover {
+  background: #007bff;
+  color: white;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0,123,255,0.3);
+  border-color: #007bff;
+}
+
+.category-item strong {
+  display: block;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.category-count {
+  background: #6c757d;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+</style>
