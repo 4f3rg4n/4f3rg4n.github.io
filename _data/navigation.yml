@@ -1,13 +1,11 @@
 # main links
 main:
-  - title: "Malware Analysis"
-    url: /categories/#malware-analysis
-  - title: "General Researches"
-    url: /categories/#general-researches
-  - title: "CTF Writeups"
-    url: /categories/#ctf-writeups
+  - title: "Articles"
+    url: /categories/#articles
+  - title: "Writeups"
+    url: /categories/#writeups
   - title: "Tutorials"
     url: /categories/#tutorials
-  - title: "All Categories"
+  - title: "All"
     url: /categories
     
